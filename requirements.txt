@@ -1,0 +1,11 @@
+Django>=5.2,<5.3
+wagtail>=7.2,<7.3
+gunicorn
+psycopg2-binary
+whitenoise
+python-dotenv
+dj-database-url
+
+djangorestframework
+drf-spectacular
+django-filter
