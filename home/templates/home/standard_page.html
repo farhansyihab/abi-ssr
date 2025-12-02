@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load wagtailimages_tags wagtailcore_tags %}
+
+{% block content %}
+
+<div class="abi-page">
+
+    {% for block in page.body %}
+
+        {# ---------------------------------------- #}
+        {# HERO SECTION                             #}
+        {# ---------------------------------------- #}
+        {% if block.block_type == "hero" %}
+            <section class="relative w-full h-[320px] flex items-center justify-center text-center text-white"
+                     style="background-image:url('{% if block.value.background %}{% image block.value.background original as bg %}{{ bg.url }}{% endif %}');
+                            background-size:cover; background-position:center;">
+                <div class="bg-black/40 absolute inset-0"></div>
+                <div class="relative z-10 max-w-3xl px-6">
+                    <h1 class="text-4xl font-bold mb-2">{{ block.value.title }}</h1>
+                    {% if block.value.subtitle %}
+                        <p class="text-lg">{{ block.value.subtitle }}</p>
+                    {% endif %}
+                </div>
+            </section>
+        {% endif %}
+
+        {# ---------------------------------------- #}
+        {# SECTION HEADING                          #}
+        {# ---------------------------------------- #}
+        {% if block.block_type == "section_heading" %}
+            <h2 class="text-3xl font-bold text-center my-10">{{ block.value.heading }}</h2>
+        {% endif %}
+
+        {# ---------------------------------------- #}
+        {# PARAGRAPH                                #}
+        {# ---------------------------------------- #}
+        {% if block.block_type == "paragraph" %}
+            <div class="max-w-5xl mx-auto px-6 my-6 prose prose-lg">
+                {{ block.value|richtext }}
+            </div>
+        {% endif %}
+
+        {# ---------------------------------------- #}
+        {# TWO COLUMNS                              #}
+        {# ---------------------------------------- #}
+        {% if block.block_type == "two_columns" %}
+            <section class="max-w-6xl mx-auto px-6 my-10 grid md:grid-cols-2 gap-10 items-center">
+                
+                {% if block.value.image_position == "left" %}
+                    <div>
+                        {% image block.value.image original as img %}
+                        <img src="{{ img.url }}" class="rounded-xl shadow-lg"/>
+                    </div>
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">{{ block.value.title }}</h3>
+                        <div class="prose prose-lg">
+                            {{ block.value.body|richtext }}
+                        </div>
+                    </div>
+                {% else %}
+                    <div>
+                        <h3 class="text-2xl font-bold mb-3">{{ block.value.title }}</h3>
+                        <div class="prose prose-lg mb-6">
+                            {{ block.value.body|richtext }}
+                        </div>
+                    </div>
+                    <div>
+                        {% image block.value.image original as img %}
+                        <img src="{{ img.url }}" class="rounded-xl shadow-lg"/>
+                    </div>
+                {% endif %}
+
+            </section>
+        {% endif %}
+
+        {# ---------------------------------------- #}
+        {# CARD GRID                                #}
+        {# ---------------------------------------- #}
+        {% if block.block_type == "card_grid" %}
+            <section class="max-w-6xl mx-auto px-6 my-10 grid md:grid-cols-3 gap-6">
+                {% for item in block.value.items %}
+                    <div class="p-6 rounded-xl shadow bg-white">
+                        {% if item.icon %}
+                            {% image item.icon original as icon %}
+                            <img src="{{ icon.url }}" class="w-12 h-12 mx-auto mb-4"/>
+                        {% endif %}
+                        <h4 class="text-xl font-bold mb-2 text-center">{{ item.title }}</h4>
+                        <p class="text-gray-600 text-center">{{ item.body }}</p>
+                    </div>
+                {% endfor %}
+            </section>
+        {% endif %}
+
+        {# ---------------------------------------- #}
+        {# NUMBERED LIST                            #}
+        {# ---------------------------------------- #}
+        {% if block.block_type == "numbered_list" %}
+            <ol class="max-w-4xl mx-auto px-6 my-6 list-decimal ml-6 text-lg text-gray-700">
+                {% for item in block.value.items %}
+                    <li class="mb-2">{{ item }}</li>
+                {% endfor %}
+            </ol>
+        {% endif %}
+
+        {# ---------------------------------------- #}
+        {# GALLERY                                  #}
+        {# ---------------------------------------- #}
+        {% if block.block_type == "gallery" %}
+            <section class="max-w-6xl mx-auto px-6 my-10 grid md:grid-cols-3 gap-6">
+                {% for image in block.value.images %}
+                    {% image image original as g %}
+                    <img src="{{ g.url }}" class="rounded-xl shadow"/>
+                {% endfor %}
+            </section>
+        {% endif %}
+
+        {# ---------------------------------------- #}
+        {# RAW HTML                                 #}
+        {# ---------------------------------------- #}
+        {% if block.block_type == "html" %}
+            <div class="max-w-6xl mx-auto px-6 my-10">
+                {{ block.value|safe }}
+            </div>
+        {% endif %}
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
