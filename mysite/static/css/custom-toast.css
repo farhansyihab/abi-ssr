@@ -1,0 +1,19 @@
+/* Custom toast animation */
+.toast.show {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Responsive positioning for notifications */
+@media (max-width: 576px) {
+    .position-fixed.bottom-0.end-0 {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        width: auto;
+    }
+}
