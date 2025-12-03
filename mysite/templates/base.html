@@ -25,7 +25,18 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/custom-toast.css' %}">
     
-    {% block extra_css %}{% endblock %}
+    {% block extra_css %}
+    <style>
+        #frmKontak {
+            padding-left: 20px;
+            background: #fff;
+            box-shadow: 0 2px 25px rgba(0,0,0,.1);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+        }
+        
+    </style>    
+    {% endblock %}
 </head>
 <body>
     <!-- Preloader -->
