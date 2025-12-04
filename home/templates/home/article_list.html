@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block title %}Artikel - {{ page.title }}{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <h1 class="mb-4">{{ page.title }}</h1>
+            
+            {% if articles %}
+                {% for article in articles %}
+                <article class="card mb-4">
+                    {% if article.specific.featured_image %}
+                    <img src="{{ article.specific.featured_image.file.url }}" 
+                         class="card-img-top" 
+                         alt="{{ article.title }}"
+                         style="height: 250px; object-fit: cover;">
+                    {% endif %}
+                    
+                    <div class="card-body">
+                        <div class="mb-2">
+                            {% if article.specific.category %}
+                            <span class="badge bg-primary">{{ article.specific.category.name }}</span>
+                            {% endif %}
+                            <small class="text-muted">
+                                <i class="bi bi-calendar"></i> 
+                                {{ article.specific.date_published|date:"d F Y"|default:"-" }}
+                            </small>
+                        </div>
+                        
+                        <h2 class="card-title h4">
+                            <a href="{% pageurl article %}" class="text-decoration-none text-dark">
+                                {{ article.title }}
+                            </a>
+                        </h2>
+                        
+                        {% if article.specific.excerpt %}
+                        <p class="card-text">{{ article.specific.excerpt }}</p>
+                        {% endif %}
+                        
+                        <a href="{% pageurl article %}" class="btn btn-outline-primary btn-sm">
+                            Baca Selengkapnya
+                        </a>
+                    </div>
+                </article>
+                {% endfor %}
+                
+                <!-- Pagination -->
+                {% if articles.paginator.num_pages > 1 %}
+                <div class="mt-4">
+                    <nav aria-label="Navigasi halaman">
+                        <ul class="pagination justify-content-center">
+                            {% if articles.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ articles.previous_page_number }}">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                            
+                            {% for page_num in articles.paginator.page_range %}
+                                {% if page_num == articles.number %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ page_num }}</span>
+                                </li>
+                                {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if articles.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ articles.next_page_number }}">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+                {% endif %}
+                
+            {% else %}
+            <div class="alert alert-info">
+                <i class="bi bi-info-circle"></i> Belum ada artikel yang tersedia.
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <!-- Latest Articles Sidebar -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-clock-history"></i> Artikel Terbaru</h5>
+                </div>
+                <div class="card-body">
+                    <!-- PERBAIKAN DI SINI: Gunakan articles dari context, bukan page.get_children -->
+                    {% if articles %}
+                    <ul class="list-unstyled mb-0">
+                        {% for article in articles|slice:":5" %}
+                        <li class="mb-2 pb-2 {% if not forloop.last %}border-bottom{% endif %}">
+                            <a href="{% pageurl article %}" class="text-decoration-none">
+                                <strong class="d-block">{{ article.title|truncatechars:40 }}</strong>
+                            </a>
+                            <small class="text-muted d-block">
+                                {{ article.specific.date_published|date:"d M Y"|default:"" }}
+                            </small>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted mb-0">Belum ada artikel</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Categories Sidebar -->
+            <div class="card">
+                <div class="card-header bg-secondary text-white">
+                    <h5 class="mb-0"><i class="bi bi-tags"></i> Kategori</h5>
+                </div>
+                <div class="card-body">
+                    {% if categories %}
+                    <ul class="list-unstyled mb-0">
+                        {% for category in categories %}
+                        <li class="mb-2">
+                            <a href="?category={{ category.id }}" class="text-decoration-none d-flex align-items-center">
+                                <i class="bi bi-arrow-right me-2"></i> 
+                                {{ category.name }}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <p class="text-muted mb-0">Belum ada kategori</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

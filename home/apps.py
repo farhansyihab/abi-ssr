@@ -8,6 +8,6 @@ class HomeConfig(AppConfig):
     def ready(self):
         # Import snippets untuk memastikan ter-register
         try:
-            from . import snippets  # noqa: F401
+            from .models import snippets  # noqa: F401
         except ImportError:
             pass

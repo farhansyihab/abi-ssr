@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block title %}{{ page.title }} - Artikel{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Main Content -->
+        <div class="col-lg-9">
+            <article>
+                <!-- Breadcrumb -->
+                <nav aria-label="breadcrumb" class="mb-4">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="/">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="{% pageurl page.get_parent %}">Artikel</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            {{ page.title }}
+                        </li>
+                    </ol>
+                </nav>
+                
+                <!-- Article Header -->
+                <header class="mb-4">
+                    <div class="mb-3">
+                        {% if page.category %}
+                        <span class="badge bg-primary">{{ page.category.name }}</span>
+                        {% endif %}
+                        <span class="text-muted ms-2">
+                            <i class="bi bi-calendar"></i> 
+                            {{ page.date_published|date:"d F Y" }}
+                        </span>
+                    </div>
+                    
+                    <!-- <h1 class="display-5 mb-3">{{ page.title }}</h1> -->
+                    
+                    <!-- {% if page.excerpt %}
+                    <p class="lead">{{ page.excerpt }}</p>
+                    {% endif %} -->
+                </header>
+                
+                <!-- Featured Image -->
+                {% if page.featured_image %}
+                <div class="mb-4">
+                    {% image page.featured_image fill-800x400 class="img-fluid rounded" %}
+                    {% if page.featured_image.caption %}
+                    <p class="text-muted text-center mt-2">
+                        <small>{{ page.featured_image.caption }}</small>
+                    </p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <!-- Article Content -->
+                <div class="article-content">
+                    {% for block in page.body %}
+                    <section class="mb-4">
+                        {% include_block block %}
+                    </section>
+                    {% endfor %}
+                </div>
+            </article>
+            
+            <!-- Navigation -->
+            <div class="d-flex justify-content-between mt-5 pt-4 border-top">
+                {% with prev=page.get_prev_siblings.live.first %}
+                {% if prev %}
+                <a href="{% pageurl prev %}" class="text-decoration-none">
+                    &larr; {{ prev.title }}
+                </a>
+                {% endif %}
+                {% endwith %}
+                
+                {% with next=page.get_next_siblings.live.first %}
+                {% if next %}
+                <a href="{% pageurl next %}" class="text-decoration-none ms-auto">
+                    {{ next.title }} &rarr;
+                </a>
+                {% endif %}
+                {% endwith %}
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="col-lg-3">
+            <!-- Latest Articles -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-newspaper"></i> Artikel Lainnya</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        {% for article in latest_articles %}
+                        <li class="mb-3">
+                            <a href="{% pageurl article %}" class="text-decoration-none">
+                                <strong>{{ article.title }}</strong>
+                            </a>
+                            <br>
+                            <small class="text-muted">
+                                {{ article.specific.date_published|date:"d M Y"|default:"" }}
+                            </small>
+                        </li>
+                        {% empty %}
+                        <li class="text-muted">Belum ada artikel lainnya</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Back to List -->
+            <div class="d-grid">
+                <a href="{% pageurl page.get_parent %}" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left"></i> Kembali ke Daftar Artikel
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

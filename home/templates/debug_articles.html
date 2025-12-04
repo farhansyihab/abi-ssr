@@ -1,0 +1,8 @@
+# home/templates/debug_articles.html (file sementara)
+{% load wagtailcore_tags %}
+
+{# Debug: List semua children #}
+Children count: {{ page.get_children.count }}
+{% for child in page.get_children.all %}
+  - {{ child.title }} ({{ child.content_type.model }})
+{% endfor %}
