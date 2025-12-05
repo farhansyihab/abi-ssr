@@ -60,7 +60,7 @@ h6 {
 # Sections & Section Header
 --------------------------------------------------------------*/
 section {
-  padding: 60px 0;
+  padding: 40px 0;
   overflow: hidden;
 }
 
@@ -2445,3 +2445,19 @@ section {
         .info-panel .info-item:last-child {
             border-right: none;
         }
+/*--------------------------------------------------------------
+# NavBar
+--------------------------------------------------------------*/  
+.navbar-brand{
+  color: blanchedalmond !important;
+}  
+
+.nav-link{
+  color: blanchedalmond !important;
+}
+.nav-link:hover{
+  color: #20a2a7 !important;
+}
+.nav-link.active{
+  color: #095480 !important;
+}
