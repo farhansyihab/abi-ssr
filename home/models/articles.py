@@ -62,8 +62,20 @@ class ArticlePage(Page):
     
     # Search configuration
     search_fields = Page.search_fields + [
-        index.SearchField('excerpt'),
-        index.SearchField('body'),
+        # Basic search fields dengan boost
+        index.SearchField('title', boost=3),
+        index.SearchField('search_description', boost=2),  # ← TAMBAH INI!
+        index.SearchField('excerpt', boost=1.5),
+        index.SearchField('body'),  # Ini mungkin tidak efektif untuk HTML
+        
+        # Autocomplete
+        index.AutocompleteField('title'),
+        index.AutocompleteField('search_description'),
+        
+        # Filters
+        index.FilterField('category_id'),
+        index.FilterField('date_published'),
+        index.FilterField('first_published_at'),
     ]
     
     content_panels = Page.content_panels + [
