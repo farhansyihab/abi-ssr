@@ -1,0 +1,14 @@
+<!-- home/templates/wagtailadmin/login.html -->
+{% extends "wagtailadmin/login.html" %}
+{% load static %}
+
+{# Ganti Logo #}
+{% block branding_logo %}
+    <img src="{% static 'home/images/logo_abi.svg' %}" alt="DPW ABI Sumatera Selatan" width="80" height="40">
+{% endblock %}
+
+{# Ganti Teks Login #}
+{% block branding_login %}
+    Masuk ke Admin ABI Sumsel
+    <!-- Ganti teks ini sesuai keinginan Anda -->
+{% endblock %}
