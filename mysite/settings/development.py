@@ -1,16 +1,19 @@
+"""
+Development settings for Wagtail.
+Uses PostgreSQL from base.py - NO SQLITE!
+"""
+
 from .base import *
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-j1if3(#x*3y*o9(cvb!^r)k9p#$i41+yzndgf6(cz(jta)u2%w"
-
-# SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = ["*"]
-
+SECRET_KEY = "django-insecure-development-key-here"
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", "172.17.0.1", "192.168.0.102"]
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+# ⚠️  NO DATABASE OVERRIDE - using PostgreSQL from base.py
+# ⚠️  NO SQLITE CODE HERE!
+
+print("✅ Development mode: Using PostgreSQL from base.py")
 
 try:
     from .local import *
